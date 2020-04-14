@@ -3,7 +3,7 @@
 
 #include "TorchFlicker.h"
 #include "GameFramework/Actor.h"
-#include "Components/LightComponent.h"
+#include "Components/PointLightComponent.h"
 #include "Math/UnrealMathUtility.h"
 
 // Sets default values for this component's properties
@@ -31,18 +31,29 @@ void UTorchFlicker::BeginPlay()
 void UTorchFlicker::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	const float MinIntensity = 3.0;
-	const float MaxIntensity = 5.0;
-	const float MinTime = 0.05;
-	const float MaxTime = 0.1;
 	static float TotalTime = 0.0;
-	static float TargetTime = FMath::RandRange(MinTime, MaxTime);
+	static float TargetTime = FMath::RandRange(MinFlickerTime, MaxFlickerTime);
 
 	if ((TotalTime += DeltaTime) >= TargetTime)
 	{
-		GetOwner()->FindComponentByClass<ULightComponent>()->SetIntensity(FMath::RandRange(MinIntensity, MaxIntensity));
+		SetNewSourceRadius(SetNewIntensity());
 		TotalTime = 0.0;
-		TargetTime = FMath::RandRange(MinTime, MaxTime);
+		TargetTime = FMath::RandRange(MinFlickerTime, MaxFlickerTime);
 	}
+}
+
+float UTorchFlicker::SetNewSourceRadius(const float Intensity)
+{
+	float IntensityScale = (Intensity - MinFlickerIntensity) / (MaxFlickerIntensity - MinFlickerIntensity);
+	float NewSourceRadius = IntensityScale * (MaxFlickerSourceRadius - MinFlickerSourceRadius) + MinFlickerSourceRadius;
+	GetOwner()->FindComponentByClass<UPointLightComponent>()->SetSourceRadius(NewSourceRadius);
+	return NewSourceRadius;
+}
+
+float UTorchFlicker::SetNewIntensity()
+{
+	float NewIntensity = FMath::RandRange(MinFlickerIntensity, MaxFlickerIntensity);
+	GetOwner()->FindComponentByClass<UPointLightComponent>()->SetIntensity(NewIntensity);
+	return NewIntensity;
 }
 
