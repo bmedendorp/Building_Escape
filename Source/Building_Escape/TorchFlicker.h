@@ -25,17 +25,17 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-	UPROPERTY(EditAnywhere, Category = FlickerAttributes)
+	UPROPERTY(EditAnywhere, Category = Attributes)
 	float MinFlickerIntensity = 3.0;
-	UPROPERTY(EditAnywhere, Category = FlickerAttributes)
+	UPROPERTY(EditAnywhere, Category = Attributes)
 	float MaxFlickerIntensity = 5.0;
-	UPROPERTY(EditAnywhere, Category = FlickerAttributes)
+	UPROPERTY(EditAnywhere, Category = Attributes)
 	float MinFlickerSourceRadius = 0.0;
-	UPROPERTY(EditAnywhere, Category = FlickerAttributes)
+	UPROPERTY(EditAnywhere, Category = Attributes)
 	float MaxFlickerSourceRadius = 5.0;
-	UPROPERTY(EditAnywhere, Category = FlickerAttributes)
+	UPROPERTY(EditAnywhere, Category = Attributes)
 	float MinFlickerTime = 0.05;
-	UPROPERTY(EditAnywhere, Category = FlickerAttributes)
+	UPROPERTY(EditAnywhere, Category = Attributes)
 	float MaxFlickerTime = 0.1;
 
 	float SetNewSourceRadius(const float Intensity);
